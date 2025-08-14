@@ -1,12 +1,28 @@
 <script>
 import CreateForm from "./addForm/CreateForm.vue";
+import EditForm from "./editForm/EditForm.vue";
+import Todo from "./listItem/Todo.vue";
 export default {
   components: {
     CreateForm,
+    EditForm,
+    Todo,
   },
   props: {
     selectedProject: {
       type: Object,
+    },
+    addTodo: {
+      type: Function,
+      required: true,
+    },
+    deleteTodo: {
+      type: Function,
+      required: true,
+    },
+    editTodo: {
+      type: Function,
+      required: true,
     },
   },
   data: () => ({
@@ -38,7 +54,28 @@ export default {
     <CreateForm
       v-if="isFormOpened && selectedProject.id"
       :closeForm="closeForm"
+      :addTodo="addTodo"
+      :selectedProjectId="selectedProject.id"
     />
     <h1 v-if="selectedProject.id" class="text-xl font-medium mt-2">Todos:</h1>
+    <ul class="w-full flex flex-col gap-2 mt-2">
+      <template v-for="todo in selectedProject.todos" :key="todo.id">
+        <Todo
+          v-if="!todo.isEditing"
+          :selectedProjectId="selectedProject.id"
+          :todo="todo"
+          :deleteTodo="deleteTodo"
+          @edit="todo.isEditing = true"
+        />
+        <EditForm
+          v-else
+          :todo="todo"
+          :selectedProjectId="selectedProject.id"
+          @edit="todo.isEditing = false"
+          :deleteTodo="deleteTodo"
+          :editTodo="editTodo"
+        />
+      </template>
+    </ul>
   </div>
 </template>

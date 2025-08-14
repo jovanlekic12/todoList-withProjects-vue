@@ -33,6 +33,48 @@ export default {
 
       console.log(this.selectedProject, "brao");
     },
+    addTodo(selectedProjectId, todo) {
+      const newProjects = this.projects.map((project) => {
+        return project.id === selectedProjectId
+          ? { ...project, todos: [...project.todos, todo] }
+          : project;
+      });
+      this.projects = newProjects;
+      this.selectedProject.todos.push(todo);
+    },
+    deleteTodo(selectedProjectId, todoId) {
+      const newProjects = this.projects.map((project) => {
+        return project.id === selectedProjectId
+          ? {
+              ...project,
+              todos: project.todos.filter((todo) => todo.id !== todoId),
+            }
+          : project;
+      });
+      this.projects = newProjects;
+      this.selectedProject.todos = this.selectedProject.todos.filter(
+        (todo) => todo.id !== todoId
+      );
+    },
+    editTodo(projectId, newTodo) {
+      const newProjects = this.projects.map((project) => {
+        return project.id === projectId
+          ? {
+              ...project,
+              todos: project.todos.map((todo) => {
+                return todo.id === newTodo.id
+                  ? { ...todo, ...newTodo }
+                  : { ...todo };
+              }),
+            }
+          : project;
+      });
+      const newTodos = this.selectedProject.todos.map((todo) => {
+        return todo.id === newTodo.id ? { ...todo, ...newTodo } : { ...todo };
+      });
+      this.projects = newProjects;
+      this.selectedProject.todos = newTodos;
+    },
   },
 };
 </script>
@@ -49,7 +91,12 @@ export default {
       :selectProject="selectProject"
       :selectedProjectId="selectedProject.id"
     />
-    <Todos :selectedProject="selectedProject" />
+    <Todos
+      :selectedProject="selectedProject"
+      :addTodo="addTodo"
+      :deleteTodo="deleteTodo"
+      :editTodo="editTodo"
+    />
   </main>
 </template>
 
