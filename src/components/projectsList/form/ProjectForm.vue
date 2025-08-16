@@ -1,14 +1,7 @@
 <script>
 export default {
   props: {
-    closeForm: {
-      type: Function,
-      required: true,
-    },
-    addProject: {
-      type: Function,
-      required: true,
-    },
+    emits: ["addProject", "closeForm"],
   },
   data: () => ({
     projectName: "",
@@ -16,9 +9,9 @@ export default {
   methods: {
     submitForm() {
       if (this.projectName.trim()) {
-        this.addProject(this.projectName.trim());
+        this.$emit("addProject", this.projectName.trim());
         this.projectName = "";
-        this.closeForm();
+        $emit("closeForm");
       }
     },
   },
@@ -42,7 +35,7 @@ export default {
       </button>
       <button
         type="button"
-        @click="closeForm"
+        @click="$emit('closeForm')"
         class="bg-white cursor-pointer px-3 py-1 text-xl uppercase font-medium rounded-xl"
       >
         Cancel

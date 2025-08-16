@@ -4,23 +4,14 @@ export default {
   components: {
     ProjectForm,
   },
+  emits: ["addProject", "deleteProject", "selectProject"],
+
   props: {
     projects: {
       type: Array,
       required: true,
     },
-    addProject: {
-      type: Function,
-      required: true,
-    },
-    deleteProject: {
-      type: Function,
-      required: true,
-    },
-    selectProject: {
-      type: Function,
-      required: true,
-    },
+
     selectedProjectId: {
       type: String,
     },
@@ -50,8 +41,8 @@ export default {
     </button>
     <ProjectForm
       v-if="isFormOpened"
-      :closeForm="closeForm"
-      :addProject="addProject"
+      @closeForm="closeForm"
+      @addProject="$emit('addProject', $event)"
     />
     <h1 v-if="projects.length > 0" class="text-xl font-medium mt-2">
       Projects:
@@ -60,14 +51,17 @@ export default {
       <li
         :key="`project-${project.id}`"
         v-for="project in projects"
-        @click="selectProject(project.id)"
+        @click="$emit('selectProject', project.id)"
         :class="[
           'flex items-center justify-between w-full font-bold hover:bg-red-600 duration-300 cursor-pointer px-5 py-2 rounded-xl',
           project.id === selectedProjectId ? 'bg-red-800 text-white' : '',
         ]"
       >
         <p>{{ project.name }}</p>
-        <button class="cursor-pointer" @click.stop="deleteProject(project.id)">
+        <button
+          class="cursor-pointer"
+          @click.stop="$emit('deleteProject', project.id)"
+        >
           X
         </button>
       </li>

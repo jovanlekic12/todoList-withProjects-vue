@@ -1,5 +1,6 @@
 <script>
 export default {
+  emits: ["addTodo", "closeForm"],
   props: {
     closeForm: {
       type: Function,
@@ -17,8 +18,8 @@ export default {
   methods: {
     submitForm() {
       if (this.todo.title.trim() && this.todo.date)
-        this.addTodo(this.selectedProjectId, this.todo);
-      this.closeForm();
+        this.$emit("addTodo", (this.selectedProjectId, this.todo));
+      this.$emit("closeForm");
     },
   },
   data: () => ({
@@ -65,7 +66,7 @@ export default {
         Add
       </button>
       <button
-        @click="closeForm"
+        @click="$emit('closeForm')"
         class="bg-red-400 w-full text-2xl font-bold py-1.5 rounded-xl cursor-pointer"
       >
         Cancel

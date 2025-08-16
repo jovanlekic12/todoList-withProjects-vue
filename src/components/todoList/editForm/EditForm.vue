@@ -1,14 +1,7 @@
 <script>
 export default {
+  emits: ["editTodo", "deleteTodo"],
   props: {
-    deleteTodo: {
-      type: Function,
-      required: true,
-    },
-    editTodo: {
-      type: Function,
-      required: true,
-    },
     selectedProjectId: {
       type: String,
       required: true,
@@ -31,7 +24,7 @@ export default {
   },
   methods: {
     handleEdit() {
-      this.editTodo(this.selectedProjectId, this.newTodo);
+      this.$emit("editTodo", (this.selectedProjectId, this.newTodo));
     },
   },
 };
@@ -62,7 +55,7 @@ export default {
         edit
       </button>
       <button
-        @click="deleteTodo(selectedProjectId, todo.id)"
+        @click="$emit('deleteTodo', (selectedProjectId, todo.id))"
         class="text-lg uppercase font-semibold px-4 py-1 rounded-xl border border-gray-400 cursor-pointer"
       >
         delete

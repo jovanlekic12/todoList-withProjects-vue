@@ -86,16 +86,16 @@ export default {
   <main class="grid grid-cols-[500px_minmax(900px,_1fr)]">
     <Projects
       :projects="projects"
-      :addProject="addProject"
-      :deleteProject="deleteProject"
-      :selectProject="selectProject"
+      @addProject="addProject"
+      @deleteProject="deleteProject"
+      @selectProject="selectProject"
       :selectedProjectId="selectedProject.id"
     />
     <Todos
       :selectedProject="selectedProject"
-      :addTodo="addTodo"
-      :deleteTodo="deleteTodo"
-      :editTodo="editTodo"
+      @addTodo="addTodo"
+      @deleteTodo="deleteTodo"
+      @editTodo="editTodo"
     />
   </main>
 </template>

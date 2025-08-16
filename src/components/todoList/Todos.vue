@@ -8,21 +8,10 @@ export default {
     EditForm,
     Todo,
   },
+  emits: ["addTodo", "editTodo", "deleteTodo"],
   props: {
     selectedProject: {
       type: Object,
-    },
-    addTodo: {
-      type: Function,
-      required: true,
-    },
-    deleteTodo: {
-      type: Function,
-      required: true,
-    },
-    editTodo: {
-      type: Function,
-      required: true,
     },
   },
   data: () => ({
@@ -53,8 +42,8 @@ export default {
     </button>
     <CreateForm
       v-if="isFormOpened && selectedProject.id"
-      :closeForm="closeForm"
-      :addTodo="addTodo"
+      @closeForm="$emit('closeForm')"
+      @addTodo="$emit('addTodo', $event)"
       :selectedProjectId="selectedProject.id"
     />
     <h1 v-if="selectedProject.id" class="text-xl font-medium mt-2">Todos:</h1>
@@ -64,7 +53,7 @@ export default {
           v-if="!todo.isEditing"
           :selectedProjectId="selectedProject.id"
           :todo="todo"
-          :deleteTodo="deleteTodo"
+          @deleteTodo="$emit('deleteTodo', $event)"
           @edit="todo.isEditing = true"
         />
         <EditForm
@@ -72,8 +61,8 @@ export default {
           :todo="todo"
           :selectedProjectId="selectedProject.id"
           @edit="todo.isEditing = false"
-          :deleteTodo="deleteTodo"
-          :editTodo="editTodo"
+          @editTodo="$emit('editTodo', $event)"
+          @deleteTodo="$emit('deleteTodo', $event)"
         />
       </template>
     </ul>
